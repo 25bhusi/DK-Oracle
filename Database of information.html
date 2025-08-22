@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database of Information</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #FF8C42, #E6691F);
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            color: white;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .button-container {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #4A90E2, #357ABD);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            min-width: 80px;
+            margin-left: 22%;
+            width: 50%;
+            text-align: center;
+        }
+
+        .btn:hover {
+            background: linear-gradient(135deg, #357ABD, #2E6BA8);
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #333;
+            margin-top: 10px;
+            background-color: white;
+        }
+
+        th, td {
+            border: 1px solid #333;
+            padding: 12px;
+            text-align: left;
+            vertical-align: middle;
+        }
+
+        th {
+            background-color: #f5f5f5;
+            font-weight: bold;
+        }
+
+        .number-col {
+            width: 100px;
+            text-align: center;
+        }
+
+        .type-col {
+            width: 150px;
+        }
+
+        .title-col {
+            width: 200px;
+        }
+
+        .description-col {
+            width: 300px;
+        }
+
+        .radio-btn {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        .select {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .row:hover {
+            background-color: #f9f9f9;
+        }
+
+        .row.selected {
+            background-color: #e3f2fd !important;
+        }
+
+        input[name="rowSelect"]:checked {
+            accent-color: #4A90E2;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        .number-cell {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .number-text {
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Database of Information</h1>
+        <div class="button-container">
+            <button class="btn" onclick="addRow()">Add</button>
+            <button class="btn" onclick="selectRow()">Select</button>
+            <button class="btn" onclick="removeRow()">Remove</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <table id="databaseTable">
+            <thead>
+                <tr>
+                    <th class="number-col">
+                        <select class="select" onchange="sortByNumber(this.value)">
+                            <option value="">Number</option>
+                            <option value="asc">Ascending</option>
+                            <option value="desc">Descending</option>
+                        </select>
+                    </th>
+                    <th class="type-col">Type</th>
+                    <th class="title-col">Title</th>
+                    <th class="description-col">Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="row" onclick="selectTableRow(this)">
+                    <td class="number-col">
+                        <div class="number-cell">
+                            <input type="radio" name="rowSelect" class="radio-btn">
+                            <span class="number-text">1</span>
+                        </div>
+                    </td>
+                    <td><input type="text" placeholder="Enter type..."></td>
+                    <td><input type="text" placeholder="Enter title..."></td>
+                    <td><input type="text" placeholder="Enter description..."></td>
+                </tr>
+                <tr class="row" onclick="selectTableRow(this)">
+                    <td class="number-col">
+                        <div class="number-cell">
+                            <input type="radio" name="rowSelect" class="radio-btn">
+                            <span class="number-text">2</span>
+                        </div>
+                    </td>
+                    <td><input type="text" placeholder="Enter type..."></td>
+                    <td><input type="text" placeholder="Enter title..."></td>
+                    <td><input type="text" placeholder="Enter description..."></td>
+                </tr>
+                <tr class="row" onclick="selectTableRow(this)">
+                    <td class="number-col">
+                        <div class="number-cell">
+                            <input type="radio" name="rowSelect" class="radio-btn">
+                            <span class="number-text">3</span>
+                        </div>
+                    </td>
+                    <td><input type="text" placeholder="Enter type..."></td>
+                    <td><input type="text" placeholder="Enter title..."></td>
+                    <td><input type="text" placeholder="Enter description..."></td>
+                </tr>
+                <tr class="row" onclick="selectTableRow(this)">
+                    <td class="number-col">
+                        <div class="number-cell">
+                            <input type="radio" name="rowSelect" class="radio-btn">
+                            <span class="number-text">4</span>
+                        </div>
+                    </td>
+                    <td><input type="text" placeholder="Enter type..."></td>
+                    <td><input type="text" placeholder="Enter title..."></td>
+                    <td><input type="text" placeholder="Enter description..."></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        let rowCounter = 4;
+
+        function selectTableRow(row) {
+            // Clear all other selections
+            document.querySelectorAll('.row').forEach(r => r.classList.remove('selected'));
+            document.querySelectorAll('input[name="rowSelect"]').forEach(r => r.checked = false);
+            
+            // Select this row
+            row.classList.add('selected');
+            row.querySelector('input[name="rowSelect"]').checked = true;
+        }
+
+        function addRow() {
+            rowCounter++;
+            const tbody = document.querySelector('#databaseTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.className = 'row';
+            newRow.onclick = function() { selectTableRow(this); };
+            
+            newRow.innerHTML = `
+                <td class="number-col">
+                    <div class="number-cell">
+                        <input type="radio" name="rowSelect" class="radio-btn">
+                        <span class="number-text">${rowCounter}</span>
+                    </div>
+                </td>
+                <td><input type="text" placeholder="Enter type..."></td>
+                <td><input type="text" placeholder="Enter title..."></td>
+                <td><input type="text" placeholder="Enter description..."></td>
+            `;
+            
+            tbody.appendChild(newRow);
+        }
+
+        function selectRow() {
+            const allRows = document.querySelectorAll('.row');
+            const allRadios = document.querySelectorAll('input[name="rowSelect"]');
+            const anySelected = document.querySelector('input[name="rowSelect"]:checked');
+            
+            if (anySelected) {
+                // If any row is selected, select all
+                allRows.forEach(row => row.classList.add('selected'));
+                allRadios.forEach(radio => radio.checked = true);
+                alert('All rows selected');
+            } else {
+                // If no rows selected, select all
+                allRows.forEach(row => row.classList.add('selected'));
+                allRadios.forEach(radio => radio.checked = true);
+                alert('All rows selected');
+            }
+        }
+
+        function removeRow() {
+            const selectedRows = document.querySelectorAll('input[name="rowSelect"]:checked');
+            if (selectedRows.length > 0) {
+                // Remove all selected rows
+                selectedRows.forEach(selectedRadio => {
+                    const row = selectedRadio.closest('tr');
+                    row.remove();
+                });
+                
+                // Renumber remaining rows
+                const remainingRows = document.querySelectorAll('#databaseTable tbody tr');
+                remainingRows.forEach((row, index) => {
+                    const numberText = row.querySelector('.number-text');
+                    numberText.textContent = (index + 1).toString();
+                });
+                
+                // Update counter
+                rowCounter = remainingRows.length;
+                
+                alert(`Removed ${selectedRows.length} row(s)`);
+            } else {
+                alert('Please select at least one row to remove');
+            }
+        }
+
+        function sortByNumber(order) {
+            if (!order) return;
+            
+            const tbody = document.querySelector('#databaseTable tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            rows.sort((a, b) => {
+                const numA = parseInt(a.querySelector('.number-text').textContent);
+                const numB = parseInt(b.querySelector('.number-text').textContent);
+                
+                if (order === 'asc') {
+                    return numA - numB;
+                } else {
+                    return numB - numA;
+                }
+            });
+            
+            // Clear tbody and add sorted rows
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
+            
+            // Renumber rows to maintain visual consistency
+            rows.forEach((row, index) => {
+                const numberText = row.querySelector('.number-text');
+                numberText.textContent = (index + 1).toString();
+            });
+        }
+    </script>
+</body>
+</html>

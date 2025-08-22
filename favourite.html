@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title style="color: #333;">Saved Answers</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #4A90E2, #357ABD);
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #FF8C42, #FF7A28);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            color: #333;
+        }
+        .rbtn{
+            background: linear-gradient(135deg, #FF7A28, #E6691F);
+            border: #333; border-style: solid; border-width: 5px;        }
+
+
+        .btn:hover {
+            background: linear-gradient(135deg, #FF7A28, #E6691F);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            background: white;
+            max-width: 1000px;
+            margin: 0 auto;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 8px solid #333;
+
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            font-weight: bold;
+            color: #333;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .number-col {
+            width: 100px;
+            text-align: center;
+        }
+
+        .question-col {
+            width: 300px;
+        }
+
+        .answer-col {
+            width: 300px;
+        }
+
+        .rating-col {
+            width: 180px;
+            text-align: center;
+        }
+
+        .checkbox-btn {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            margin-right: 8px;
+            accent-color: #4A90E2;
+        }
+
+        .header-checkbox {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #4A90E2;
+            margin-right: 8px;
+        }
+
+        select {
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: white;
+            font-size: 13px;
+        }
+
+        .rating-select {
+            width: 100%;
+            padding: 6px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-weight: bold;
+            background: white;
+        }
+
+        .sort-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .sort-controls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .row:hover {
+            background-color: #f8f9fa;
+        }
+
+        .row.selected {
+            background-color: #e3f2fd !important;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #4A90E2;
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+        }
+
+        .rating-10 
+        .rating-9 
+        .rating-8 
+        .rating-7 
+        .rating-6 
+        .rating-5 
+        .rating-4 
+        .rating-3 
+        .rating-2 
+        .rating-1 
+
+        @media (max-width: 768px) {
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .btn {
+                width: 120px;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            th, td {
+                padding: 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div>
+        <button class="rbtn" onclick="returntopreviousepage()">↩</button>
+    </div>
+    <div class="header">
+        <h1 style="color: #333;">Saved Answers</h1>
+    </div>
+
+    <div class="button-container">
+        <button style="border: #333; border-style: solid; border-width: 5px;" class="btn" onclick="addRow()">Add Row</button>
+        <button style="border: #333; border-style: solid; border-width: 5px;" class="btn" onclick="selectToggle()">Select All</button>
+        <button style="border: #333; border-style: solid; border-width: 5px;" class="btn" onclick="removeRow()">Remove</button>
+    </div>
+
+    <div class="container">
+        <div class="table-container">
+            <table id="answersTable">
+                <thead>
+                    <tr>
+                        <th class="number-col">
+                            <div class="sort-header">
+                                <div class="sort-controls">
+                                    <input type="checkbox" class="header-checkbox" onclick="toggleAllRows(this)">
+                                    <span>Number</span>
+                                </div>
+                            </div>
+                        </th>
+                        <th class="question-col">Question</th>
+                        <th class="answer-col">Answer</th>
+                        <th class="rating-col">
+                            <div class="sort-header">
+                                <span>Rating</span>
+                                <select onchange="sortByRating(this.value)">
+                                    <option value="">Sort</option>
+                                    <option value="asc">Low-High</option>
+                                    <option value="desc">High-Low</option>
+                                </select>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="row">
+                        <td class="number-col">
+                            <input type="checkbox" class="checkbox-btn" onchange="updateSelection()">
+                            1
+                        </td>
+                        <td><input type="text" placeholder="Enter question..." value=""></td>
+                        <td><input type="text" placeholder="Enter answer..." value=""></td>
+                        <td class="rating-col">
+                            <select class="rating-select" onchange="updateRatingColor(this)">
+                                <option value="10" >10/10</option>
+                                <option value="9">9/10</option>
+                                <option value="8">8/10</option>
+                                <option value="7">7/10</option>
+                                <option value="6">6/10</option>
+                                <option value="5">5/10</option>
+                                <option value="4">4/10</option>
+                                <option value="3">3/10</option>
+                                <option value="2">2/10</option>
+                                <option value="1">1/10</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td class="number-col">
+                            <input type="checkbox" class="checkbox-btn" onchange="updateSelection()">
+                            2
+                        </td>
+                        <td><input type="text" placeholder="Enter question..." value=""></td>
+                        <td><input type="text" placeholder="Enter answer..." value=""></td>
+                        <td class="rating-col">
+                            <select class="rating-select" onchange="updateRatingColor(this)">
+                                <option value="10">10/10</option>
+                                <option value="9">9/10</option>
+                                <option value="8" >8/10</option>
+                                <option value="7">7/10</option>
+                                <option value="6">6/10</option>
+                                <option value="5">5/10</option>
+                                <option value="4">4/10</option>
+                                <option value="3">3/10</option>
+                                <option value="2">2/10</option>
+                                <option value="1">1/10</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td class="number-col">
+                            <input type="checkbox" class="checkbox-btn" onchange="updateSelection()">
+                            3
+                        </td>
+                        <td><input type="text" placeholder="Enter question..." value=""></td>
+                        <td><input type="text" placeholder="Enter answer..." value=""></td>
+                        <td class="rating-col">
+                            <select class="rating-select" onchange="updateRatingColor(this)">
+                                <option value="10">10/10</option>
+                                <option value="9">9/10</option>
+                                <option value="8">8/10</option>
+                                <option value="7">7/10</option>
+                                <option value="6" >6/10</option>
+                                <option value="5">5/10</option>
+                                <option value="4">4/10</option>
+                                <option value="3">3/10</option>
+                                <option value="2">2/10</option>
+                                <option value="1">1/10</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="row">
+                        <td class="number-col">
+                            <input type="checkbox" class="checkbox-btn" onchange="updateSelection()">
+                            4
+                        </td>
+                        <td><input type="text" placeholder="Enter question..." value=""></td>
+                        <td><input type="text" placeholder="Enter answer..." value=""></td>
+                        <td class="rating-col">
+                            <select class="rating-select" onchange="updateRatingColor(this)">
+                                <option value="10">10/10</option>
+                                <option value="9">9/10</option>
+                                <option value="8">8/10</option>
+                                <option value="7">7/10</option>
+                                <option value="6">6/10</option>
+                                <option value="5">5/10</option>
+                                <option value="4">4/10</option>
+                                <option value="3" >3/10</option>
+                                <option value="2">2/10</option>
+                                <option value="1">1/10</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+
+        function returntopreviousepage() {
+            // Open the history page in a new tab/window
+            window.open('hi.html', '_blank');        }
+
+        let rowCounter = 4;
+
+        function updateRatingColor(select) {
+            const row = select.closest('tr');
+            const rating = select.value;
+            
+            // Remove all rating classes
+            row.classList.remove('rating-1', 'rating-2', 'rating-3', 'rating-4', 'rating-5', 
+                               'rating-6', 'rating-7', 'rating-8', 'rating-9', 'rating-10');
+            
+            // Add appropriate rating class
+            row.classList.add(`rating-${rating}`);
+        }
+
+        function updateSelection() {
+            const checkboxes = document.querySelectorAll('.checkbox-btn:checked');
+            const headerCheckbox = document.querySelector('.header-checkbox');
+            const allCheckboxes = document.querySelectorAll('.checkbox-btn');
+            
+            // Update row highlighting
+            document.querySelectorAll('.row').forEach((row) => {
+                const checkbox = row.querySelector('.checkbox-btn');
+                if (checkbox.checked) {
+                    row.classList.add('selected');
+                } else {
+                    row.classList.remove('selected');
+                }
+            });
+            
+            // Update header checkbox state
+            if (checkboxes.length === 0) {
+                headerCheckbox.indeterminate = false;
+                headerCheckbox.checked = false;
+            } else if (checkboxes.length === allCheckboxes.length) {
+                headerCheckbox.indeterminate = false;
+                headerCheckbox.checked = true;
+            } else {
+                headerCheckbox.indeterminate = true;
+            }
+        }
+
+        function toggleAllRows(headerCheckbox) {
+            const allCheckboxes = document.querySelectorAll('.checkbox-btn');
+            allCheckboxes.forEach(checkbox => {
+                checkbox.checked = headerCheckbox.checked;
+            });
+            updateSelection();
+        }
+
+        function selectToggle() {
+            const headerCheckbox = document.querySelector('.header-checkbox');
+            const allCheckboxes = document.querySelectorAll('.checkbox-btn');
+            const selectedRows = document.querySelectorAll('.checkbox-btn:checked');
+            
+            if (selectedRows.length === allCheckboxes.length) {
+                // All selected, so deselect all
+                headerCheckbox.checked = false;
+                allCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            } else {
+                // Not all selected, so select all
+                headerCheckbox.checked = true;
+                allCheckboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+            }
+            updateSelection();
+        }
+        
+
+        function sortByNumber(order) {
+            if (!order) return;
+            
+            const tbody = document.querySelector('#answersTable tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            rows.sort((a, b) => {
+                const numA = parseInt(a.cells[0].textContent.match(/\d+/)[0]);
+                const numB = parseInt(b.cells[0].textContent.match(/\d+/)[0]);
+                
+                return order === 'asc' ? numA - numB : numB - numA;
+            });
+            
+            // Clear tbody and add sorted rows
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
+            
+            // Renumber rows to maintain visual consistency
+            renumberRows();
+        }
+
+        function sortByRating(order) {
+            if (!order) return;
+            
+            const tbody = document.querySelector('#answersTable tbody');
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            
+            rows.sort((a, b) => {
+                const ratingA = parseInt(a.querySelector('.rating-select').value);
+                const ratingB = parseInt(b.querySelector('.rating-select').value);
+                
+                return order === 'asc' ? ratingA - ratingB : ratingB - ratingA;
+            });
+            
+            // Clear tbody and add sorted rows
+            tbody.innerHTML = '';
+            rows.forEach(row => tbody.appendChild(row));
+            
+            // Renumber rows to maintain visual consistency
+            renumberRows();
+        }
+
+        function renumberRows() {
+            const rows = document.querySelectorAll('#answersTable tbody tr');
+            rows.forEach((row, index) => {
+                const numberCell = row.querySelector('td:first-child');
+                const checkbox = numberCell.querySelector('.checkbox-btn');
+                numberCell.innerHTML = '';
+                numberCell.appendChild(checkbox);
+                numberCell.appendChild(document.createTextNode(` ${index + 1}`));
+            });
+        }
+
+        function addRow() {
+            rowCounter++;
+            const tbody = document.querySelector('#answersTable tbody');
+            const newRow = document.createElement('tr');
+            newRow.className = 'row';
+            
+            newRow.innerHTML = `
+                <td class="number-col">
+                    <input type="checkbox" class="checkbox-btn" onchange="updateSelection()">
+                    ${rowCounter}
+                </td>
+                <td><input type="text" placeholder="Enter question..."></td>
+                <td><input type="text" placeholder="Enter answer..."></td>
+                <td class="rating-col">
+                    <select class="rating-select" onchange="updateRatingColor(this)">
+                        <option value="10" selected>10/10</option>
+                        <option value="9">9/10</option>
+                        <option value="8">8/10</option>
+                        <option value="7">7/10</option>
+                        <option value="6">6/10</option>
+                        <option value="5">5/10</option>
+                        <option value="4">4/10</option>
+                        <option value="3">3/10</option>
+                        <option value="2">2/10</option>
+                        <option value="1">1/10</option>
+                    </select>
+                </td>
+            `;
+            
+            tbody.appendChild(newRow);
+            updateSelection();
+            
+            // Apply rating color to new row
+            const newSelect = newRow.querySelector('.rating-select');
+            updateRatingColor(newSelect);
+        }
+
+        function removeRow() {
+            const selectedRows = document.querySelectorAll('.checkbox-btn:checked');
+            if (selectedRows.length > 0) {
+                // Remove selected rows
+                selectedRows.forEach(checkbox => {
+                    const row = checkbox.closest('tr');
+                    row.remove();
+                });
+                
+                // Renumber remaining rows
+                renumberRows();
+                
+                // Update counter
+                const remainingRows = document.querySelectorAll('#answersTable tbody tr');
+                rowCounter = remainingRows.length;
+                updateSelection();
+            } else {
+                alert('Please select one or more rows to remove');
+            }
+        }
+
+        function clearData() {
+            if (confirm('Are you sure you want to clear all data? This cannot be undone.')) {
+                // Clear all input fields
+                document.querySelectorAll('input[type="text"]').forEach(input => {
+                    input.value = '';
+                });
+                
+                // Reset all ratings to 10/10
+                document.querySelectorAll('.rating-select').forEach(select => {
+                    select.value = '10';
+                    updateRatingColor(select);
+                });
+                
+                // Uncheck all checkboxes
+                document.querySelectorAll('.checkbox-btn').forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+                
+                updateSelection();
+            }
+        }
+
+        // Initialize rating colors and selection state on page load
+        function initializeApp() {
+            document.querySelectorAll('.rating-select').forEach(select => {
+                updateRatingColor(select);
+            });
+            updateSelection();
+        }
+
+        // Initialize the app when the page loads
+        window.addEventListener('DOMContentLoaded', initializeApp);
+    </script>
+</body>
+</html>
